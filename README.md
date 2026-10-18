@@ -2,7 +2,7 @@
 
 Make any folder on your Synology NAS also appear as its own SMB share, without moving or copying a single file.
 
-For example, if your files live in `/volume1/data/media/movies`, Bind Mount Manager lets you open them as `\\NAS\movies`, as if `movies` were a top-level shared folder. The original location keeps working exactly as before.
+For example, if your files live in `/volume1/archive/projects`, Bind Mount Manager lets you open them as `\\NAS\projects`, as if `projects` were a top-level shared folder. The original location keeps working exactly as before.
 
 It is a small DSM package with a point-and-click interface: pick the folder, name the new share, done. Mounts are restored automatically after every reboot.
 
@@ -31,7 +31,7 @@ It is a small DSM package with a point-and-click interface: pick the folder, nam
 
 ## What problem does it solve?
 
-In DSM only a registered **shared folder** can be an SMB share. A subfolder such as `data/media/movies` can be reached as `\\NAS\data\media\movies`, but it cannot be `\\NAS\movies` on its own.
+In DSM only a registered **shared folder** can be an SMB share. A subfolder such as `archive/projects` can be reached as `\\NAS\archive\projects`, but it cannot be `\\NAS\projects` on its own.
 
 The usual answers are to move the files into a new shared folder, copy them, or use symlinks (which SMB clients generally will not follow). All of them are awkward when the data is already in place and used by other apps.
 
@@ -79,8 +79,8 @@ When it worked, the header shows **Helper running**.
 ### Add a mount
 
 1. Click **Add mount**.
-2. **Folder with your files (source):** choose the existing folder, for example `/volume1/data/media/movies`. It is never moved or changed.
-3. **Name of the new share:** the NAS name is filled in for you and the folder name is suggested. Edit it if you like, for example `\\MYNAS\movies`. The name must be new on that volume.
+2. **Folder with your files (source):** choose the existing folder, for example `/volume1/archive/projects`. It is never moved or changed.
+3. **Name of the new share:** the NAS name is filled in for you and the folder name is suggested. Edit it if you like, for example `\\MYNAS\projects`. The name must be new on that volume.
 4. Optionally tick **Read only** so people using the new share cannot change files.
 5. Click **Create share and mount**.
 
@@ -120,7 +120,7 @@ Access is then the combination of the share permission and the existing file per
  bmm-helper         runs as root (Task Scheduler boot-up task)
       |  validates everything, then runs: mount --bind
       v
- /volume1/data/media/movies  ==appears also as==>  /volume1/movies  ==>  \\NAS\movies
+ /volume1/archive/projects  ==appears also as==>  /volume1/projects  ==>  \\NAS\projects
 ```
 
 - **Web interface** (`ui/app.js`, `ui/app.css`): a single page with no external libraries. It talks to `api.cgi` for the mount list and the folder browser, and to DSM's own web API for the actions that need a confirmed administrator password (creating the shared folder and the boot-up task).
