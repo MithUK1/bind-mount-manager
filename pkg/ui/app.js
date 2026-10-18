@@ -498,7 +498,7 @@
     if (!status.helper.alive) return null;
     return h('section', { class: 'card empty' },
       h('h2', { text: 'No bind mounts yet' }),
-      h('p', { text: 'A bind mount makes a folder that already has files show up as its own share, without moving or copying anything. For example, make /volume2/data/media/tv also appear as \\\\NAS\\tv.' }),
+      h('p', { text: 'A bind mount makes a folder that already has files show up as its own share, without moving or copying anything. For example, make /volume1/data/media/movies also appear as \\\\NAS\\movies.' }),
       h('button', { class: 'primary big', text: 'Add your first mount', disabled: !canAdd(), title: canAdd() ? '' : 'Update the helper first', onclick: openAdd }));
   }
 
@@ -669,7 +669,7 @@
 
   function newShareBlock(host) {
     var vol = volOf(dlg.source);
-    var nameIn = h('input', { type: 'text', class: 'nameinput', maxlength: '64', placeholder: 'tv', value: dlg.name, disabled: !dlg.source });
+    var nameIn = h('input', { type: 'text', class: 'nameinput', maxlength: '64', placeholder: 'movies', value: dlg.name, disabled: !dlg.source });
     nameIn.addEventListener('input', function () {
       var pos = nameIn.selectionStart;
       dlg.name = nameIn.value;
@@ -705,7 +705,7 @@
     var tgt = finalTarget();
     var ready = dlg.source && tgt && !problem && !dlg.saving;
     var host = (status && status.host) || 'NAS';
-    var shareName = (dlg.name || '').trim() || 'tv';
+    var shareName = (dlg.name || '').trim() || 'movies';
     var roBox = h('input', { type: 'checkbox', checked: dlg.ro });
     roBox.addEventListener('change', function () { dlg.ro = roBox.checked; });
 
@@ -720,7 +720,7 @@
       h('h2', { text: 'Add a bind mount' }),
       h('p', { class: 'sub', text: 'Make a folder that already has files show up as its own share, without moving or copying anything.' }),
       chooseRow('source', '1. Folder with your files (source)',
-        'The folder that already holds the files, for example /volume2/data/media/tv. It stays exactly where it is.', dlg.source),
+        'The folder that already holds the files, for example /volume1/data/media/movies. It stays exactly where it is.', dlg.source),
       helpTip('src', 'What goes here?', [
         'This is the existing folder you want to reach from somewhere else.',
         'Nothing in it is moved, copied or changed. Its current permissions keep applying.'
