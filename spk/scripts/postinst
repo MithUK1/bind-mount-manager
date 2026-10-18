@@ -1,0 +1,79 @@
+#!/bin/sh
+# Bind Mount Manager - post install
+#
+# Always: make sure the data folders exist.
+# If the installer wizard got an administrator account + password, ask DSM
+# (the same way its own Task Scheduler page does) to create a root boot-up task
+# and run it, so the root helper starts now and after every reboot.
+# Nothing here can fail the install, and the password is never written to disk
+# longer than the few seconds a request takes.
+
+PKG="BindMountManager"
+VAR="${SYNOPKG_PKGVAR:-/var/packages/$PKG/var}"
+DEST="${SYNOPKG_PKGDEST:-/var/packages/$PKG/target}"
+TASK_NAME="Bind Mount Manager"
+TASK_CMD="/bin/bash /var/packages/$PKG/target/bin/install-helper.sh"
+LOG="$VAR/setup.log"
+BASE="${BMM_DSM_URL:-https://localhost:5001}"
+
+mkdir -p "$VAR/spool" 2>/dev/null
+[ -f "$VAR/mounts.conf" ] || : > "$VAR/mounts.conf"
+
+log() { printf '%s %s\n' "$(date '+%F %T')" "$1" >> "$LOG" 2>/dev/null; }
+field() { sed -n "s/.*\"$1\":\"\\([^\"]*\\)\".*/\\1/p" | head -n 1; }
+
+# --- 1. root install (only if DSM ever runs this as root) ---
+if [ "$(id -u)" = "0" ]; then
+  BMM_SRC="$DEST/bin/bmm-helper.sh" /bin/bash "$DEST/bin/install-helper.sh" --force >/dev/null 2>&1
+fi
+
+# --- 2. wizard credentials: create the root boot-up task through DSM ---
+U="$pkgwizard_admin_user"
+P="$pkgwizard_admin_pass"
+if [ -n "$U" ] && [ -n "$P" ] && command -v curl >/dev/null 2>&1; then
+  : > "$LOG"; chmod 600 "$LOG" 2>/dev/null
+  PWF="$VAR/.pw.$$"
+  ( umask 077; printf '%s' "$P" > "$PWF" )
+  C="curl -sk -m 25"
+
+  R=$($C -G "$BASE/webapi/auth.cgi" --data-urlencode "api=SYNO.API.Auth" --data-urlencode "version=6" \
+        --data-urlencode "method=login" --data-urlencode "format=sid" \
+        --data-urlencode "account=$U" --data-urlencode "passwd@$PWF")
+  SID=$(printf '%s' "$R" | field sid)
+  if [ -z "$SID" ]; then
+    log "sign-in failed: $(printf '%s' "$R" | head -c 200)"
+  else
+    R=$($C "$BASE/webapi/entry.cgi" --data-urlencode "api=SYNO.Core.User.PasswordConfirm" --data-urlencode "version=1" \
+          --data-urlencode "method=auth" --data-urlencode "password@$PWF" --data-urlencode "_sid=$SID")
+    TOK=$(printf '%s' "$R" | field SynoConfirmPWToken)
+    if [ -z "$TOK" ]; then
+      log "password confirm failed: $(printf '%s' "$R" | head -c 200)"
+    else
+      R=$($C "$BASE/webapi/entry.cgi" --data-urlencode "api=SYNO.Core.EventScheduler" --data-urlencode "version=1" \
+            --data-urlencode "method=run" --data-urlencode "task_name=$TASK_NAME" --data-urlencode "_sid=$SID")
+      if printf '%s' "$R" | grep -q '"success":true'; then
+        log "task already exists, started it"
+      else
+        R=$($C "$BASE/webapi/entry.cgi" --data-urlencode "api=SYNO.Core.EventScheduler.Root" --data-urlencode "version=1" \
+              --data-urlencode "method=create" --data-urlencode "task_name=$TASK_NAME" \
+              --data-urlencode 'owner={"0":"root"}' --data-urlencode "event=bootup" --data-urlencode "depend_on_task=" \
+              --data-urlencode "enable=true" --data-urlencode "notify_enable=false" --data-urlencode 'notify_mail=""' \
+              --data-urlencode "notify_if_error=false" --data-urlencode "operation=$TASK_CMD" \
+              --data-urlencode "operation_type=script" --data-urlencode "SynoConfirmPWToken=$TOK" --data-urlencode "_sid=$SID")
+        if printf '%s' "$R" | grep -q '"success":true'; then
+          log "boot-up task created"
+          $C "$BASE/webapi/entry.cgi" --data-urlencode "api=SYNO.Core.EventScheduler" --data-urlencode "version=1" \
+            --data-urlencode "method=run" --data-urlencode "task_name=$TASK_NAME" --data-urlencode "_sid=$SID" >/dev/null
+          log "helper start requested"
+        else
+          log "create failed: $(printf '%s' "$R" | head -c 300)"
+        fi
+      fi
+    fi
+    $C -G "$BASE/webapi/auth.cgi" --data-urlencode "api=SYNO.API.Auth" --data-urlencode "version=6" \
+      --data-urlencode "method=logout" --data-urlencode "_sid=$SID" >/dev/null
+  fi
+  rm -f "$PWF"
+fi
+
+exit 0

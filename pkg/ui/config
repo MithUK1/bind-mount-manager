@@ -1,0 +1,14 @@
+{
+    ".url": {
+        "SYNO.SDS.BindMountManager.Application": {
+            "type": "url",
+            "title": "Bind Mount Manager",
+            "desc": "Make folders appear inside other shared folders",
+            "icon": "images/icon_{0}.png",
+            "url": "/webman/3rdparty/BindMountManager/app-v100.html",
+            "allUsers": false,
+            "grantPrivilege": "local",
+            "advanceGrantPrivilege": true
+        }
+    }
+}

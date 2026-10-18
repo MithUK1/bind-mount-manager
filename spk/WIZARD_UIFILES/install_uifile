@@ -1,0 +1,35 @@
+[
+    {
+        "step_title": "One-time setup (optional)",
+        "items": [
+            {
+                "desc": "Bind mounts need a small helper that runs as root. To set it up for you now, enter an administrator account and its password. They are only used once to ask DSM to create a boot-up task in Task Scheduler, and are never stored. Leave both blank to set it up later from inside the app."
+            },
+            {
+                "type": "textfield",
+                "desc": "Administrator account",
+                "subitems": [
+                    {
+                        "key": "pkgwizard_admin_user",
+                        "desc": "Account name",
+                        "defaultValue": "",
+                        "emptyText": "admin",
+                        "validator": { "allowBlank": true }
+                    }
+                ]
+            },
+            {
+                "type": "password",
+                "desc": "Administrator password",
+                "subitems": [
+                    {
+                        "key": "pkgwizard_admin_pass",
+                        "desc": "Password",
+                        "defaultValue": "",
+                        "validator": { "allowBlank": true }
+                    }
+                ]
+            }
+        ]
+    }
+]
