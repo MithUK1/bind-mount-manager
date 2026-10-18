@@ -2,7 +2,7 @@
 
 Make any folder on your Synology NAS also appear as its own SMB share, without moving or copying a single file.
 
-For example, if your files live in `/volume1/data/media/movies`, Bind Mount Manager lets you open them as `\\NAS\tv`, as if `movies` were a top-level shared folder. The original location keeps working exactly as before.
+For example, if your files live in `/volume1/data/media/movies`, Bind Mount Manager lets you open them as `\\NAS\movies`, as if `movies` were a top-level shared folder. The original location keeps working exactly as before.
 
 It is a small DSM package with a point-and-click interface: pick the folder, name the new share, done. Mounts are restored automatically after every reboot.
 
@@ -31,7 +31,7 @@ It is a small DSM package with a point-and-click interface: pick the folder, nam
 
 ## What problem does it solve?
 
-In DSM only a registered **shared folder** can be an SMB share. A subfolder such as `data/media/movies` can be reached as `\\NAS\data\media\tv`, but it cannot be `\\NAS\tv` on its own.
+In DSM only a registered **shared folder** can be an SMB share. A subfolder such as `data/media/movies` can be reached as `\\NAS\data\media\movies`, but it cannot be `\\NAS\movies` on its own.
 
 The usual answers are to move the files into a new shared folder, copy them, or use symlinks (which SMB clients generally will not follow). All of them are awkward when the data is already in place and used by other apps.
 
@@ -120,7 +120,7 @@ Access is then the combination of the share permission and the existing file per
  bmm-helper         runs as root (Task Scheduler boot-up task)
       |  validates everything, then runs: mount --bind
       v
- /volume1/data/media/movies  ==appears also as==>  /volume1/movies  ==>  \\NAS\tv
+ /volume1/data/media/movies  ==appears also as==>  /volume1/movies  ==>  \\NAS\movies
 ```
 
 - **Web interface** (`ui/app.js`, `ui/app.css`): a single page with no external libraries. It talks to `api.cgi` for the mount list and the folder browser, and to DSM's own web API for the actions that need a confirmed administrator password (creating the shared folder and the boot-up task).
