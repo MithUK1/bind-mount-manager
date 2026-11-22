@@ -21,6 +21,9 @@ It is a small DSM package with a point-and-click interface: pick the folder, nam
 - [How it works](#how-it-works)
 - [Safety checks](#safety-checks)
 - [Updating, uninstalling](#updating-and-uninstalling)
+- [Settings](#settings)
+- [Where things are stored](#where-things-are-stored)
+- [Privacy](#privacy)
 - [Troubleshooting](#troubleshooting)
 - [FAQ](#faq)
 - [Build from source](#build-from-source)
@@ -155,6 +158,20 @@ The helper is the only part running as root, so it treats everything it receives
 3. In Task Scheduler delete the **Bind Mount Manager** task.
 4. The empty shared folders it created stay. Delete them in Shared Folder if you no longer need them.
 5. Optional: remove the installed copy with `sudo rm /usr/local/bin/bmm-helper`.
+
+## Settings
+
+There is no separate settings window. Each mount has two switches in its row: **Enabled** (mounted now and after every reboot) and **Read only** (the second share cannot change files). Changes apply within a few seconds.
+
+## Where things are stored
+
+- Mount list: `/var/packages/BindMountManager/var/mounts.conf` (plain text, one line per mount). Back it up before uninstalling if you want to restore your mounts.
+- Helper: `/usr/local/bin/bmm-helper`, started by the **Bind Mount Manager** boot-up task in Task Scheduler.
+- Logs and live status: `/run/bindmountmanager/` (`helper.log`), install log `/var/packages/BindMountManager/var/setup.log`.
+
+## Privacy
+
+Everything stays on your NAS. The app has no network port of its own, sends nothing anywhere and collects nothing. Your DSM password is only passed to DSM for the confirmations it asks for and is never stored or logged.
 
 ## Troubleshooting
 
