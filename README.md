@@ -47,7 +47,7 @@ A **bind mount** is the Linux feature that fixes this. It makes the same directo
 
 ## Install
 
-1. Download `BindMountManager-1.0.0.spk` from the Releases page.
+1. Download `BindMountManager-1.0.1.spk` from the Releases page.
 2. In DSM open **Package Center > Manual Install**, browse to the file and click **Next**.
 3. On the wizard page you can optionally enter your administrator name and password so the one-time setup happens during the install. Leave it blank to do it later from the app. See below for what this does.
 4. Finish the wizard. **Bind Mount Manager** appears in the main menu.
@@ -205,7 +205,7 @@ spk/         INFO, icons, conf/privilege, scripts/, WIZARD_UIFILES/
 build.sh     packs package.tgz, updates the checksum in INFO, builds the .spk
 ```
 
-The version number lives in four places: `spk/INFO`, `APP_VERSION` and `EXPECTED_HELPER` in `pkg/ui/api.cgi`, and `HELPER_VERSION` in `pkg/bin/bmm-helper.sh`. When the UI changes, rename the entry page (for example `app-v100.html`), update the `url` in `pkg/ui/config` and the `?v=` query strings, so browsers do not serve cached files.
+The version number lives in four places: `spk/INFO`, `APP_VERSION` and `EXPECTED_HELPER` in `pkg/ui/api.cgi`, and `HELPER_VERSION` in `pkg/bin/bmm-helper.sh`. When the UI changes, rename the entry page (for example `app-v101.html`), update the `url` in `pkg/ui/config` and the `?v=` query strings, so browsers do not serve cached files.
 
 ## Disclaimer
 

@@ -502,10 +502,9 @@
       h('button', { class: 'primary big', text: 'Add your first mount', disabled: !canAdd(), title: canAdd() ? '' : 'Update the helper first', onclick: openAdd }));
   }
 
+  // Builds the small version label shown at the bottom left of the page
   function footer() {
-    return h('footer', { class: 'foot', text: status
-      ? 'Bind Mount Manager ' + status.version + (status.helper.alive ? '  |  helper ' + status.helper.version : '')
-      : 'Bind Mount Manager' });
+    return h('footer', { class: 'foot', text: 'v' + (status ? status.version : '1.0.1') + ' - MUK1' });
   }
 
   function render() {

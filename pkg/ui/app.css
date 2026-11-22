@@ -106,7 +106,7 @@ button.big { padding: 10px 20px; font-size: 16px; }
 .switch input:checked + .track::after { transform: translateX(20px); }
 .switch input:disabled { cursor: wait; }
 
-footer.foot { color: var(--muted); font-size: 12px; text-align: center; margin-top: 24px; }
+footer.foot { color: var(--muted); font-size: 11px; text-align: left; margin-top: 24px; }
 
 .modal-root { position: fixed; inset: 0; background: rgba(10, 14, 22, .55); display: flex; align-items: flex-start; justify-content: center; padding: 24px 12px; overflow-y: auto; z-index: 10; }
 .modal-root[hidden] { display: none; }

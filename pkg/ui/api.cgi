@@ -9,8 +9,8 @@ CONF="$VAR/mounts.conf"
 SPOOL="$VAR/spool"
 LOCKD="$VAR/.lock"
 RUN="/run/bindmountmanager"
-APP_VERSION="1.0.0"
-EXPECTED_HELPER="1.0.0"
+APP_VERSION="1.0.1"
+EXPECTED_HELPER="1.0.1"
 MAX_MOUNTS=100
 
 umask 027

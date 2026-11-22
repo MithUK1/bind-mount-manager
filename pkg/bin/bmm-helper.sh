@@ -9,7 +9,7 @@
 #
 # Usage: bmm-helper {start|stop|restart|status|run}
 
-HELPER_VERSION="1.0.0"
+HELPER_VERSION="1.0.1"
 
 PKG="BindMountManager"
 PKGDIR="/var/packages/$PKG"
