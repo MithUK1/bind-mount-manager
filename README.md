@@ -12,9 +12,9 @@ It is a small DSM package with a point-and-click interface: pick the folder, nam
 
 ## Contents
 
-- [What problem does it solve?](#what-problem-does-it-solve)
+- [What it does](#what-it-does)
 - [Requirements](#requirements)
-- [Installation](#installation)
+- [Install](#install)
 - [First-time setup](#first-time-setup)
 - [Using it](#using-it)
 - [Permissions](#permissions)
@@ -23,13 +23,13 @@ It is a small DSM package with a point-and-click interface: pick the folder, nam
 - [Updating, uninstalling](#updating-and-uninstalling)
 - [Troubleshooting](#troubleshooting)
 - [FAQ](#faq)
-- [Building from source](#building-from-source)
+- [Build from source](#build-from-source)
 - [Disclaimer](#disclaimer)
 - [Licence](#licence)
 
 ---
 
-## What problem does it solve?
+## What it does
 
 In DSM only a registered **shared folder** can be an SMB share. A subfolder such as `archive/projects` can be reached as `\\NAS\archive\projects`, but it cannot be `\\NAS\projects` on its own.
 
@@ -45,7 +45,7 @@ A **bind mount** is the Linux feature that fixes this. It makes the same directo
 - **Package Center > Settings > General > Trust Level** must allow packages from any publisher, because this package is not signed by Synology. Set it back afterwards if you prefer.
 - DSM opened over **HTTPS** for the automatic setup (the password confirmation API only works over HTTPS).
 
-## Installation
+## Install
 
 1. Download `BindMountManager-1.0.0.spk` from the Releases page.
 2. In DSM open **Package Center > Manual Install**, browse to the file and click **Next**.
@@ -190,7 +190,7 @@ Anything that reads the shared folder sees the files. SMB is the main use case a
 **Can I mount into an existing shared folder instead of creating a new one?**
 Yes, use **Use an existing empty folder instead**, or a subfolder of a shared folder where the helper allows it.
 
-## Building from source
+## Build from source
 
 ```
 ./build.sh
